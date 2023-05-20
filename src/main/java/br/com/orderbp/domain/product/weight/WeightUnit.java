@@ -1,6 +1,5 @@
-package br.com.orderbp.domain.product;
+package br.com.orderbp.domain.product.weight;
 
-import br.com.orderbp.domain.product.Weight;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -12,7 +11,7 @@ public enum WeightUnit {
     KG(Kilograms::new),
     G(Grams::new);
 
-    private Function<BigDecimal, Weight> create;
+    private final Function<BigDecimal, Weight> create;
 
     Weight instance(BigDecimal value){
         return create.apply(value);

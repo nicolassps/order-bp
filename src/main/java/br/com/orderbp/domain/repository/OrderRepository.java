@@ -6,5 +6,4 @@ public interface OrderRepository {
 
     void create(Order order);
 
-
 }

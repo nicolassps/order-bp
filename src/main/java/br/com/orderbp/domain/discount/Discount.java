@@ -12,7 +12,6 @@ public class Discount {
     private String label;
     private BigDecimal value;
     private DiscountType type;
-
     public BigDecimal apply(BigDecimal totalValue){
         return type.getAdapter().applyDiscount(value, totalValue);
     }

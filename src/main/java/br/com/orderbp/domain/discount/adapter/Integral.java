@@ -7,6 +7,6 @@ import java.math.BigDecimal;
 public class Integral implements DiscountAdapter {
     @Override
     public BigDecimal applyDiscount(BigDecimal discountValue, BigDecimal ofValue) {
-        return discountValue.min(ofValue);
+        return ofValue.subtract(discountValue);
     }
 }

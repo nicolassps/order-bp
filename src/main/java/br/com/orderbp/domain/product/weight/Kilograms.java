@@ -1,4 +1,4 @@
-package br.com.orderbp.domain.product;
+package br.com.orderbp.domain.product.weight;
 
 import java.math.BigDecimal;
 
@@ -10,12 +10,12 @@ class Kilograms extends Weight{
     }
 
     @Override
-    BigDecimal kilograms() {
+    public BigDecimal kilograms() {
         return value;
     }
 
     @Override
-    BigDecimal grams() {
+    public BigDecimal grams() {
         return value.multiply(BigDecimal.valueOf(1000));
     }
 }

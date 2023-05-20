@@ -1,14 +1,14 @@
 package br.com.orderbp.domain.order;
 
 import br.com.orderbp.domain.discount.Discount;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+
+import static br.com.orderbp.domain.order.enumeration.OrderStatus.CREATED;
 
 class OrderBuilder {
-    private Order order;
+    private final Order order = new Order();
 
     OrderBuilder(){
-        this.order = new Order();
+        this.order.setStatus(CREATED);
     }
 
     public OrderBuilder withDiscount(Discount discount){

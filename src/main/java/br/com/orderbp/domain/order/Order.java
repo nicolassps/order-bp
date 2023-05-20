@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -29,16 +30,17 @@ public class Order {
             items = new ArrayList<>();
         }
 
-        var alreadyExist = items.stream().anyMatch(i -> i.getProduct().equals(item.getProduct()));
+        var alreadyExist = items.stream()
+                .anyMatch(i -> i.getProduct().getIdentifier().equals(item.getProduct().getIdentifier()));
 
         if (alreadyExist) {
             final var alreadyItem = items.stream()
-                    .filter(i -> i.getProduct().equals(item.getProduct()))
+                    .filter(i -> i.getProduct().getIdentifier().equals(item.getProduct().getIdentifier()))
                     .filter(i -> i.getValue().equals(item.getValue()))
                     .findFirst()
                     .orElseThrow(InvalidOperationException::new);
 
-            alreadyItem.add(item.getValue());
+            alreadyItem.add(item.getQuantity());
             return;
         }
 
@@ -49,7 +51,7 @@ public class Order {
         var total = items.stream()
                 .map(OrderItem::totalPrice)
                 .reduce(BigDecimal::add)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(InvalidOperationException::new);
 
         if (nonNull(discount)){
             return discount.apply(total);
@@ -58,9 +60,18 @@ public class Order {
         return total;
     }
 
+    public BigDecimal totalQuantity(){
+        return items.stream()
+                .map(OrderItem::getQuantity)
+                .reduce(BigDecimal::add)
+                .orElseThrow(InvalidOperationException::new);
+    }
 
+    public Integer distinctItems(){
+        return items.size();
+    }
 
-    public OrderBuilder builder(){
+    public static OrderBuilder builder(){
         return new OrderBuilder();
     }
 }
