@@ -4,7 +4,7 @@ import br.com.orderbp.domain.discount.Discount;
 
 import static br.com.orderbp.domain.order.enumeration.OrderStatus.CREATED;
 
-class OrderBuilder {
+public class OrderBuilder {
     private final Order order = new Order();
 
     OrderBuilder(){

@@ -3,6 +3,8 @@ package br.com.orderbp.domain.order;
 import br.com.orderbp.domain.discount.Discount;
 import br.com.orderbp.domain.order.enumeration.OrderStatus;
 import br.com.orderbp.domain.order.exception.InvalidOperationException;
+import br.com.orderbp.domain.product.Product;
+import br.com.orderbp.domain.product.weight.WeightUnit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static br.com.orderbp.domain.product.weight.WeightUnit.KG;
 import static java.util.Objects.nonNull;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Setter(AccessLevel.PACKAGE)
 public class Order {
+    @Getter
     private Long id;
     @Getter
     private String consumerDocument;
@@ -24,6 +28,8 @@ public class Order {
     private Discount discount;
     @Getter
     private OrderStatus status;
+    @Getter
+    private String refuseReason;
 
     public void acceptItem(OrderItem item){
         if (isEmpty(items)){
@@ -65,6 +71,26 @@ public class Order {
                 .map(OrderItem::getQuantity)
                 .reduce(BigDecimal::add)
                 .orElseThrow(InvalidOperationException::new);
+    }
+
+    public BigDecimal totalWeigth(WeightUnit unit){
+        return items.stream()
+                .map(item -> item.totalWeight(unit))
+                .reduce(BigDecimal::add)
+                .orElseThrow(InvalidOperationException::new);
+    }
+
+    public void acceptReserve(){
+        this.status = OrderStatus.RESERVED;
+    }
+
+    public void refuse(String reason){
+        this.status = OrderStatus.REFUSED;
+        this.refuseReason = reason;
+    }
+
+    public void createdShipping(){
+        this.status = OrderStatus.SCHEDULED_SHIPPING;
     }
 
     public Integer distinctItems(){

@@ -24,6 +24,12 @@ class ProductBuilderTest {
                 .build();
 
         assertTrue(product.valid());
+        assertEquals("MOUSE", product.getName());
+        assertEquals("PG-2981294", product.getIdentifier());
+        assertEquals(BigDecimal.valueOf(29.90), product.getPrice());
+        assertEquals(BigDecimal.valueOf(1), product.getWeight().kilograms());
+        assertEquals(BigDecimal.valueOf(1000), product.getWeight().grams());
+
     }
 
     @Test

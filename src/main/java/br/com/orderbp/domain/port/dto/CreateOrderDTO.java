@@ -10,5 +10,7 @@ import java.util.List;
 public class CreateOrderDTO {
     private String consumerDocument;
 
+    private String discountCoupon;
+
     private List<OrderItemDTO> items;
 }
